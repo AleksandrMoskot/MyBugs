@@ -1,1 +1,18 @@
-[{"id":"10bb5c02.519674","type":"function","z":"31332582.eedb62","name":"Присвоение ответа","func":"if(msg.sid.errorMessage.$.text !== undefined){\n    msg.payload = msg.sid.errorMessage.$.text;\n}\nelse{\n    msg.payload = 'Ошибка. Проверьте правильность ввода данных и повторите запрос позже.'\n}\n\n\nreturn msg;","outputs":1,"noerr":0,"x":660,"y":300,"wires":[["159f7a09.3c4c06"]]}]
+[{"id":"1bbd2cbb.1deb93","type":"function","z":"31332582.eedb62","name":"Определение оператора","func":"if (msg.task.phone > 0)
+{\n    msg.task.rp = msg.task.phone;\n}\nelse {\n    msg.payload = 'Номер введен неверно';\n    return[null,null,null,null,msg];\n}\n\nif 
+(msg.task.rp.length == 13){\n    msg.task.oper = msg.task.rp.slice(3,6);\n    msg.task.number = msg.task.phone.slice(3);\n}\nelse if 
+(msg.task.rp.length == 12){\n    msg.task.oper = msg.task.rp.slice(2,5);\n    msg.task.number = msg.task.phone.slice(2);\n}\nelse if 
+(msg.task.rp.length == 11){\n    msg.task.oper = msg.task.rp.slice(1,4);\n    msg.task.number = msg.task.phone.slice(1);\n}\nelse if 
+(msg.task.rp.length == 10){\n    msg.task.oper = msg.task.rp.slice(0,3);\n    msg.task.number = msg.task.phone;\n}\nelse{\n    
+msg.payload = 'Номер введен неверно';\n    return[null,null,null,null,msg];\n}\n\nif
+(msg.task.oper == '099' || msg.task.oper == '066'|| msg.task.oper == '095'){\n    msg.task.oname = 'Vodafone';\n    
+msg.payload = '+38'+msg.task.number+' '+msg.task.oname;\n    return[msg,null,null,null,null];\n}\nelse if(msg.task.oper == '093' || 
+msg.task.oper == '063' || msg.task.oper == '073'){\n    msg.task.oname = 'Lifecell';\n    msg.payload = '+38'+msg.task.number+' 
+'+msg.task.oname;\n    return[null,msg,null,null,null];\n}\nelse if(msg.task.oper == '067' || msg.task.oper == '097'){\n   
+msg.task.oname = \"Kyivstar\";\n    msg.payload = '+38'+msg.task.number+' '+msg.task.oname;\n    
+return[null,null,msg,null,null];\n}\nelse if(msg.task.oper[0] == \"0\"){\n    msg.task.oname = 'Other';\n   
+msg.payload = '+38'+msg.task.number+' '+msg.task.oname;\n    return[null,null,null,msg,null];\n}\nelse{\n   
+msg.payload = 'Номер введен неверно';\n    
+return[null,null,null,null,msg];\n}","outputs":5,"noerr":0,"x":870,"y":380,"wires":[["1c4886fe.e41ca9","b7f4e87d.8544d8"],
+["1c4886fe.e41ca9","ae2a3cc5.6d161"],["1c4886fe.e41ca9","d9cd4adc.1d9158"],["1c4886fe.e41ca9","f4a21edd.655a3"],
+["1c4886fe.e41ca9","89a3d3fa.155e4"]]}]
